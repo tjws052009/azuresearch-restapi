@@ -11,11 +11,15 @@ Currently, the example does not cover details on the following:
 
 Last Updated 2019/10/25
 
+---
+
 # Prerequisites
 
 - Azure subscription
 - Postman
 - Visual Studio Code
+
+---
 
 # Setup Instructions
 
@@ -92,6 +96,18 @@ Once you execute all the API requests, navigate to the Azure Search resource. Ch
 
 Now, check the index with **Search explorer**. Make sure you see the documents indexes with items in the **keyPhrases** field in all UpperCase.
 
-# Description
+---
 
-TBA
+# Details
+
+## Architecture
+
+Flow diagram of the skillset in this repository. 
+
+<img width="930" alt="Skillset architecture" src="https://user-images.githubusercontent.com/56287262/67839551-43285300-fb37-11e9-8d64-ab500960f861.png">
+
+## Resources
+
+- [Create a basic index in Azure Search](https://docs.microsoft.com/en-us/azure/search/search-what-is-an-index)
+- [Indexers in Azure Search](https://docs.microsoft.com/en-us/azure/search/search-indexer-overview)
+- [Attach a Cognitive Services resource with a skillset in Azure Search](https://docs.microsoft.com/en-us/azure/search/cognitive-search-attach-cognitive-services)
