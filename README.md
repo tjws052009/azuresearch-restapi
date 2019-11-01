@@ -110,4 +110,5 @@ Flow diagram of the skillset in this repository.
 
 - [Create a basic index in Azure Search](https://docs.microsoft.com/en-us/azure/search/search-what-is-an-index)
 - [Indexers in Azure Search](https://docs.microsoft.com/en-us/azure/search/search-indexer-overview)
+- [Indexing Documents in Azure Blob Storage with Azure Search](https://docs.microsoft.com/en-us/azure/search/search-howto-indexing-azure-blob-storage#content-type-specific-metadata-properties)
 - [Attach a Cognitive Services resource with a skillset in Azure Search](https://docs.microsoft.com/en-us/azure/search/cognitive-search-attach-cognitive-services)
