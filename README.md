@@ -100,9 +100,25 @@ Now, check the index with **Search explorer**. Make sure you see the documents i
 
 # Details
 
-## Architecture
+## Summary
 
-Flow diagram of the skillset in this repository. 
+The search set up consists of thee major components, **Index**, **Indexer**, and **Skillset**.
+
+An **Index** is where structured documents are persisted, used for filtering and full text search.
+
+An **Indexer** will take data from an external data source and map the data into the index.
+
+A **Skillset** holds functionality to enhance documents, and are called by the Indexer in the indexing process.
+
+Each component work together as shown below. 
+
+<img width="817" alt="AzureSearchIndexer" src="https://user-images.githubusercontent.com/56287262/68179868-e1ebfe00-ffd4-11e9-8335-aa25c2fa661d.png">
+
+
+
+## Skillset in detail
+
+Flow diagram of the skillsets in this repository. 
 
 <img width="930" alt="Skillset architecture" src="https://user-images.githubusercontent.com/56287262/67839551-43285300-fb37-11e9-8d64-ab500960f861.png">
 
