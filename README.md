@@ -84,7 +84,7 @@ Once it is deployed, navigate to your Function and note the Function URL.
 
 The necessary APIs should be set up in Postman. When experimenting with new indices, there will be a lot of experimentation. You will repeatedly delete and create the index until you achieve the result you want. Don't forget to set your environment variables in POSTMAN.
 
-First of all, you need to create a Data Source. In this example, we will use a Azure Blob Storage, but you can use sources such as CosmosDB and SQL Server. In your Storage Account, create a blob container, named the same as the environment variable `datasource-container`. Use the `CreateDatasource` API to add a Data Source to your Azure Search. If you need some sample files to upload, you can try using the files under [/review-docs/docs](https://github.com/mstosugimo-gh/azuresearch-restapi/tree/master/review_docs/docs) in the repository.
+First of all, you need to create a Data Source. In this example, we will use a Azure Blob Storage, but you can use sources such as CosmosDB and SQL Server. In your Storage Account, create a blob container, named the same as the environment variable `datasource-container`. Use the `CreateDatasource` API to add a Data Source to your Azure Search. If you need some sample files to upload, you can try using the files under [/review-docs/docs](https://github.com/mstosugimo-gh/azuresearch-restapi/tree/master/review-docs/docs) in the repository.
 
 The Postman example has both create and delete for the necessary features, index, skillset and indexer.
 When creating the index, you will want to Execute the APIs in the following order.
