@@ -57,6 +57,7 @@ Last Updated 2019/10/25
 | skillset-name | Name of the Skillset in your Azure Search |
 | indexer-name | Name of the Indexer to create in your Azure Search |
 | webapi-function-url | The Function URL for your Custom Web API. You can use it for your local environment too. |
+| datasource-container | Name of the Stroage blob container that is associated as the data source |
 
 ## Deploying the Azure resources
 
@@ -81,14 +82,16 @@ Once it is deployed, navigate to your Function and note the Function URL.
 
 ## Setting up Azure Search
 
-The necessary APIs should be set up in Postman. When experimenting with new indices, there will be a lot of experimentation. You will repeatedly delete and create the index until you achieve the result you want.
+The necessary APIs should be set up in Postman. When experimenting with new indices, there will be a lot of experimentation. You will repeatedly delete and create the index until you achieve the result you want. Don't forget to set your environment variables in POSTMAN.
+
+First of all, you need to create a Data Source. In this example, we will use a Azure Blob Storage, but you can use sources such as CosmosDB and SQL Server. In your Storage Account, create a blob container, named the same as the environment variable `datasource-container`. Use the `CreateDatasource` API to add a Data Source to your Azure Search. If you need some sample files to upload, you can try using the files under [/review-docs/docs](https://github.com/mstosugimo-gh/azuresearch-restapi/tree/master/review_docs/docs) in the repository.
 
 The Postman example has both create and delete for the necessary features, index, skillset and indexer.
 When creating the index, you will want to Execute the APIs in the following order.
 
-1. CreateIndex
-2. CreateSkillset
-3. CreateIndexer
+1. `CreateIndex`
+1. `CreateSkillset`
+1. `CreateIndexer`
 
 Once you execute all the API requests, navigate to the Azure Search resource. Check under **Overview > Indexer** and see that the indexer you created show **Status: Success**
 
@@ -106,7 +109,7 @@ The search set up consists of thee major components, **Index**, **Indexer**, and
 
 An **Index** is where structured documents are persisted, used for filtering and full text search.
 
-An **Indexer** will take data from an external data source and map the data into the index.
+An **Indexer** will take data from an external data source and map the data into the index. The indexer is run once on creation, but can be run on-demand or on a schedule.
 
 A **Skillset** holds functionality to enhance documents, and are called by the Indexer in the indexing process.
 
