@@ -4,10 +4,7 @@ This repository provides an example of Azure Search, utilizing the [cognitive se
 
 The example provides the necessary [REST APIs](https://docs.microsoft.com/en-us/rest/api/searchservice/) to create an index, skillset, and indexer to read files from a Storage Account. Also, the example provides an example of using [Custom Web API Skillset](https://docs.microsoft.com/en-us/azure/search/cognitive-search-custom-skill-web-api) using [Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/functions-overview)
 
-Currently, the example does not cover details on the following:
-- Creation of necessary resources (Azure Search, Function, Storage Account, Cognitive Services)
-- Deployment of Function from VSCode
-- Detailed use of Postman
+The repository includes a ARM template that deploys the following Azure resources. ([Details](#deploying_the_azure_resources))
 
 Last Updated 2019/10/25
 
@@ -61,22 +58,27 @@ Last Updated 2019/10/25
 
 ## Deploying the Azure resources
 
-The following resources are necessary for this example. Noted are particular values/keys you need to retrieve from each service.
+The following resources are necessary for this example. Noted are particular values/keys you need to retrieve from each service or some assumptions on the setup.
 
 - Azure Search
   - API Key
 - Function (Linux based, consumption model)
   - Function URL (will be created after [deploying the function](#deploying_the_function_for_custom_web_api))
 - Storage Account
+  - The Storage Account used for the Data Source should have a Blob Container created
   - Connection String
 - Cognitive Services
   - API Key
+
+An ARM template `azuredeploy.json` is provided in the repository that deploys the above resources. You can deploy it using Azure Portal, CLI, Powershell, etc., 
 
 ## Deploying the Function for Custom Web API
 
 The code for the function is provided in the /functions directory. Using the VSCode Functions Extension, deploy this to a Linux based Function.
 
 Once it is deployed, navigate to your Function and note the Function URL.
+
+You can test the function using the POSTMAN Api called `CustomSkill-Functions`. Update the environment variable `webapi-function-url` with the Function URL
 
 ![Get Function URL in Azure Functions](doc-files/get-url-az-func.png)
 

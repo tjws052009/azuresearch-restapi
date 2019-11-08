@@ -1,0 +1,202 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "metadata": {
+                "description": "The location for all resources. Leave as is to stay in same region as resource group."
+            },
+            "type": "string",
+            "minLength": 1,
+            "defaultValue": "[resourceGroup().location]"
+        },
+        "cognitive_service_sku": {
+            "type": "string",
+            "metadata": {
+              "description": "SKU for Cognitive Services"
+            },
+            "defaultValue": "F0",
+            "allowedValues": [
+              "F0",
+              "S0",
+              "S1"
+            ]
+        },
+        "cognitive_service_name": {
+            "defaultValue": "cogservxyz001",
+            "type": "String"
+        },
+        "search_service_name": {
+            "defaultValue": "searchxyz001",
+            "type": "String"
+        },
+        "search_service_sku": {
+            "type": "string",
+            "defaultValue": "standard",
+            "allowedValues": [
+              "free",
+              "basic",
+              "standard",
+              "standard2",
+              "standard3"
+            ],
+            "metadata": {
+              "description": "The SKU of the search service you want to create. E.g. free or standard"
+            }
+        },
+        "search_storageAccounts_name": {
+            "defaultValue": "searchstrgxyz001",
+            "type": "String"
+        },
+        "search_storage_container_name": {
+            "defaultValue": "reviews",
+            "type": "String"
+        },
+        "function_app_name": {
+            "type": "string",
+            "defaultValue": "azfcxyz001",
+            "metadata": {
+              "description": "The name of the function app that you wish to create. This value can be maximum of 11 characters."
+            }
+        },
+        "function_runtime": {
+            "type": "string",
+            "defaultValue": "node",
+            "allowedValues": ["node", "dotnet", "java"],
+            "metadata": {
+              "description": "The language worker runtime to load in the function app."
+            }
+        }
+    },
+    "variables": {
+        "function_storageAccount_name": "[concat(uniquestring(resourceGroup().id), parameters('function_app_name'))]",
+        "function_hosting_plan_name": "[parameters('function_app_name')]",
+        "function_storageAccount_id": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', variables('function_storageAccount_name'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.CognitiveServices/accounts",
+            "apiVersion": "2017-04-18",
+            "name": "[parameters('cognitive_service_name')]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "[parameters('cognitive_service_sku')]"
+            },
+            "kind": "CognitiveServices",
+            "properties": {
+                "apiProperties": {
+                    "statisticsEnabled": false
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Search/searchServices",
+            "apiVersion": "2015-08-19",
+            "name": "[parameters('search_service_name')]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "[parameters('search_service_sku')]"
+            },
+            "properties": {
+                "replicaCount": 1,
+                "partitionCount": 1,
+                "hostingMode": "Default"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "name": "[parameters('search_storageAccounts_name')]",
+            "apiVersion": "2018-07-01",
+            "location": "[parameters('location')]",
+            "kind": "StorageV2",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "accessTier": "Hot"
+            },
+            "resources": [
+                {
+                    "name": "[concat('default/', parameters('search_storage_container_name'))]",
+                    "type": "blobServices/containers",
+                    "apiVersion": "2018-07-01",
+                    "dependsOn": [
+                        "[parameters('search_storageAccounts_name')]"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "name": "[variables('function_storageAccount_name')]",
+            "apiVersion": "2018-07-01",
+            "location": "[parameters('location')]",
+            "kind": "Storage",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            }
+        },
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2018-02-01",
+            "name": "[variables('function_hosting_plan_name')]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "Y1",
+            "tier": "Dynamic"
+            },
+            "properties": {
+              "name": "[variables('function_hosting_plan_name')]",
+              "computeMode": "Dynamic"
+            }
+        },
+        {
+            "apiVersion": "2019-08-01",
+            "type": "Microsoft.Web/sites",
+            "name": "[parameters('function_app_name')]",
+            "location": "[parameters('location')]",
+            "kind": "functionapp",
+            "dependsOn": [
+              "[resourceId('Microsoft.Web/serverfarms', variables('function_hosting_plan_name'))]",
+              "[resourceId('Microsoft.Storage/storageAccounts', variables('function_storageAccount_name'))]"
+            ],
+            "properties": {
+              "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('function_hosting_plan_name'))]",
+              "siteConfig": {
+                "appSettings": [
+                  {
+                    "name": "AzureWebJobsDashboard",
+                    "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('function_storageAccount_name'), ';AccountKey=', listKeys(variables('function_storageAccount_id'),'2015-05-01-preview').key1)]"
+                  },
+                  {
+                    "name": "AzureWebJobsStorage",
+                    "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('function_storageAccount_name'), ';AccountKey=', listKeys(variables('function_storageAccount_id'),'2015-05-01-preview').key1)]"
+                  },
+                  {
+                    "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+                    "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('function_storageAccount_name'), ';AccountKey=', listKeys(variables('function_storageAccount_id'),'2015-05-01-preview').key1)]"
+                  },
+                  {
+                    "name": "WEBSITE_CONTENTSHARE",
+                    "value": "[toLower(parameters('function_app_name'))]"
+                  },
+                  {
+                    "name": "FUNCTIONS_EXTENSION_VERSION",
+                    "value": "~2"
+                  },
+                  {
+                    "name": "WEBSITE_NODE_DEFAULT_VERSION",
+                    "value": "8.11.1"
+                  },
+                  {
+                    "name": "FUNCTIONS_WORKER_RUNTIME",
+                    "value": "[parameters('function_runtime')]"
+                  }
+                ]
+              }
+            }
+        }
+    ]
+}
