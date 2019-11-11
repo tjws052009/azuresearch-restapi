@@ -1,0 +1,5 @@
+{
+  "serviceName" : "[SEARCH_SERVICE_NAME]",
+  "queryKey" : "[SEARCH_SERVICE_QUERY_KEY]",
+  "indexName" : "reviews"
+}

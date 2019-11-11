@@ -1,0 +1,15 @@
+{
+  "name": "searchtest",
+  "version": "1.0.0",
+  "description": "Test UI for Search",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "nconf": "^0.10.0",
+    "node-fetch": "^2.6.0"
+  }
+}
