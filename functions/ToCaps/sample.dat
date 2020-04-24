@@ -1,3 +1,10 @@
 {
-    "name": "Azure"
+    "values": [
+        {
+            "data": {
+                "recordId": 1,
+                "text": "bast"
+            }
+        }
+    ]
 }
