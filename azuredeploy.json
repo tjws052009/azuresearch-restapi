@@ -15,11 +15,9 @@
             "metadata": {
               "description": "SKU for Cognitive Services"
             },
-            "defaultValue": "F0",
+            "defaultValue": "S0",
             "allowedValues": [
-              "F0",
-              "S0",
-              "S1"
+              "S0"
             ]
         },
         "cognitive_service_name": {
@@ -82,7 +80,7 @@
             "sku": {
                 "name": "[parameters('cognitive_service_sku')]"
             },
-            "kind": "TextAnalytics",
+            "kind": "CognitiveServices",
             "properties": {
                 "apiProperties": {
                     "statisticsEnabled": false
