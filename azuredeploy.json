@@ -82,7 +82,7 @@
             "sku": {
                 "name": "[parameters('cognitive_service_sku')]"
             },
-            "kind": "CognitiveServices",
+            "kind": "TextAnalytics",
             "properties": {
                 "apiProperties": {
                     "statisticsEnabled": false
